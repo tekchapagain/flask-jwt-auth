@@ -3,9 +3,9 @@ from extension import db, jwt
 from auth import auth_bp
 from users import user_bp
 from models import User, TokenBlocklist
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
-load_dotenv()
+# load_dotenv()
 
 
 def create_app():
