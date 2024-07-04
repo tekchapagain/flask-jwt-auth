@@ -3,6 +3,7 @@ from extension import db, jwt
 from auth import auth_bp
 from users import user_bp
 from models import User, TokenBlocklist
+from flask_cors import CORS, cross_origin
 # from dotenv import load_dotenv
 
 # load_dotenv()
@@ -10,7 +11,8 @@ from models import User, TokenBlocklist
 
 def create_app():
     app = Flask(__name__)
-
+    cors =CORS(app)
+    app.config['CORS_HEADERS'] = 'Content-Type'
     app.config.from_prefixed_env()
 
     # initialize exts
