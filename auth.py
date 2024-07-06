@@ -75,6 +75,7 @@ def refresh_access():
     identity = get_jwt_identity()
 
     new_access_token = create_access_token(identity=identity, fresh=False)
+    new_refresh_token =create_refresh_token(identity=identity)
     
     jwt = get_jwt()
 
@@ -87,12 +88,13 @@ def refresh_access():
     return jsonify(
         {
             "new_access_token": new_access_token,
+            "new_refresh_token": new_refresh_token,
             "msg" : f"{token_type.capitalize()} has been revoked"
         })
 
 
-@auth_bp.get('/logout')
-@jwt_required() 
+@auth_bp.route('/logout', methods=["DELETE"])
+@jwt_required(verify_type=False) 
 def logout_user():
     jwt = get_jwt()
 

@@ -1,7 +1,7 @@
 from extension import db
 import uuid
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime
+from datetime import datetime, timezone
  
 class User(db.Model):
     __tablename__ = "users"
@@ -35,7 +35,7 @@ class User(db.Model):
 class TokenBlocklist(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     jti = db.Column(db.String(), nullable=True)
-    create_at = db.Column(db.DateTime(), default=datetime.utcnow)
+    create_at = db.Column(db.DateTime(), default=datetime.now(timezone.utc))
 
     def __repr__(self):
         return f"<Token {self.jti}>"
