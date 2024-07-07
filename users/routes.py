@@ -12,5 +12,5 @@ def create_authentication_routes(api: Api):
     api.add_resource(RefreshApi, "/api/auth/refresh")
     api.add_resource(LogoutApi, "/api/auth/logout")
     api.add_resource(ForgotPassword, "/api/auth/forgot")
-    api.add_resource(ResetPassword, "/api/auth/reset-password/<token>")
+    api.add_resource(ResetPassword, "/api/auth/reset-password")
     api.add_resource(ResetEmail, "/api/auth/emailreset")

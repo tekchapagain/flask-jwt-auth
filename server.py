@@ -42,7 +42,7 @@ def create_app():
 
     db.init_app(app)
     jwt.init_app(app)
-    
+    mail.init_app(app)
     # # load user
     # @jwt.user_lookup_loader
     # def user_lookup_callback(_jwt_headers, jwt_data):
@@ -93,8 +93,3 @@ def create_app():
 
     #     return token is not None
     return app
-
-
-if __name__ == "__main__":
-    app = create_app()
-    app.run(host="0.0.0.0", port=5000)

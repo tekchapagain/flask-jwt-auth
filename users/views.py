@@ -78,12 +78,14 @@ class ForgotPassword(Resource):
 
 class ResetPassword(Resource):
     @staticmethod
-    def post(token) -> Response:
+    def post() -> Response:
         """
         POST response method for save new password.
 
         :return: JSON object
         """
+        # Access request headers
+        token = request.headers["Token"]
         input_data = request.get_json()
         response, status = reset_password(request, input_data, token)
         return make_response(response, status)
