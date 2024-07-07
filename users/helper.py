@@ -13,10 +13,10 @@ def send_forgot_password_email(request, user):
     """
     current_site = request.url_root
     mail_subject = "Niceclickllc - Password Reset"
-    domain = os.environ.get("API_URL")
     token = TokenGenerator.encode_token(user.email)
     msg = Message(
         mail_subject, sender="info@niceclickllc.com", recipients=[user.email]
     )
-    msg.html = f"Please click on the link to reset your password, {domain}/api/auth/reset-password/{token}/"
-    mail.send(msg)
+    msg.html = f"Please click on the link to reset your password, {current_site}api/auth/reset-password/{token}/"
+    print(msg.html)
+    # mail.send(msg)

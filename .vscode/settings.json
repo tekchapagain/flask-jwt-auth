@@ -1,0 +1,17 @@
+{
+    "sqltools.connections": [
+        {
+            "pgOptions": {
+                "ssl": {
+                    "rejectUnauthorized": true
+                }
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "driver": "PostgreSQL",
+            "connectString": "postgresql://flask_auth_api_user:ei1wQtMJb0xVDNaujuOPxlNWmgO0tJ6J@dpg-cq2ngttds78s73eir26g-a.oregon-postgres.render.com/flask_auth_api",
+            "connectionTimeout": 30,
+            "name": "Prod"
+        }
+    ]
+}

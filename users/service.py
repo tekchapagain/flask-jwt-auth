@@ -163,7 +163,7 @@ def refresh_access():
                    "revoked token": f"{token_type.capitalize()}"
                 }
     return generate_response(
-        data=send_data, message="Provided new access and refresh token ", status=HTTP_201_CREATED
+        data=send_data, message="Provided new access and refresh token", status=HTTP_201_CREATED
     )
 
 @jwt_required(verify_type=False) 
