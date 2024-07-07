@@ -18,5 +18,5 @@ def send_forgot_password_email(request, user):
         mail_subject, sender="info@niceclickllc.com", recipients=[user.email]
     )
     msg.html = f"Please click on the link to reset your password, {current_site}api/auth/reset-password/{token}/"
-    print(msg.html)
-    # mail.send(msg)
+    # print(msg.html)
+    mail.send(msg)
