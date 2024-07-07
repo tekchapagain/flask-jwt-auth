@@ -30,8 +30,8 @@ def user_lookup_callback(_jwt_headers, jwt_data):
 @jwt.additional_claims_loader
 def make_additional_claims(identity):
     if identity == "admin":
-        return {"is_admin": True}
-    return {"is_admin": False}
+        return {"is_staff": True}
+    return {"is_staff": False}
 
 # jwt error handlers
 @jwt.expired_token_loader
@@ -253,4 +253,26 @@ def reset_email(request, input_data):
     db.session.commit()
     return generate_response(
         data = email ,message="New email updated successfully", status=HTTP_200_OK
+    )
+
+
+@jwt_required()
+def get_all_users(request):
+    claims = get_jwt()
+    
+    if claims.get("is_staff") == True:
+        page = request.args.get("page", default=1, type=int)
+
+        per_page = request.args.get("per_page", default=3, type=int)
+
+        users = User.query.paginate(page=page, per_page=per_page)
+
+        result = CreateSignupInputSchema().dump(users, many=True)
+
+        return generate_response(
+        result, status=HTTP_200_OK
+        )
+
+    return generate_response(
+        message="You are not authorized to view this", status=HTTP_401_UNAUTHORIZED
     )

@@ -101,3 +101,14 @@ class ResetEmail(MethodView):
         input_data = request.get_json()
         response, status = reset_email(request, input_data)
         return make_response(response, status)
+    
+class UserListApi(MethodView):
+    @staticmethod
+    def get() -> Response:
+        """
+        POST response method for save new password.
+
+        :return: JSON object
+        """
+        response, status = get_all_users(request)
+        return make_response(response, status)
