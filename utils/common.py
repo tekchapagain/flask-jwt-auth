@@ -76,7 +76,8 @@ class TokenGenerator:
             max_age=expiration
         )
         except:
-            return False
-        return email 
+            return None
+        return email
+       
 
 token_generator = TokenGenerator()

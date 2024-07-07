@@ -198,9 +198,10 @@ def reset_password_email_send(request, input_data):
             message="No record found with this email. please signup first.",
             status=HTTP_400_BAD_REQUEST,
         )
-    send_forgot_password_email(request, user)
+    token = send_forgot_password_email(request, user)
+    input_data['token'] = token
     return generate_response(
-        message="Link sent to the registered email address.", status=HTTP_200_OK
+        data = input_data, message="Link sent to the registered email address.", status=HTTP_200_OK
     )
 
 
@@ -223,7 +224,6 @@ def reset_password(request, input_data, token):
         )
     # print(user.set_pass)
     user.set_password(input_data.get("password"))
-    db.session.commit()
     return generate_response(
         message="Password changed successfully", status=HTTP_200_OK
     )
