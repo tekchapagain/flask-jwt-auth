@@ -228,8 +228,9 @@ def reset_password(request, input_data, token):
             message="The link has already expired",
             status=HTTP_400_BAD_REQUEST,
         )
-    # print(user.set_pass)
+    print(user)
     user.set_password(input_data.get("password"))
+    db.session.commit()
     return generate_response(
         message="Password changed successfully", status=HTTP_200_OK
     )
