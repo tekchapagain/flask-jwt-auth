@@ -17,7 +17,7 @@ from users.validation import (
     CreateResetPasswordEmailSendInputSchema,
     CreateSignupInputSchema, ResetPasswordInputSchema,
 )
-from utils.http_code import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST,HTTP_401_UNAUTHORIZED
+from utils.http_code import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST,HTTP_401_UNAUTHORIZED,HTTP_500_INTERNAL_SERVER_ERROR
 
 
  # load user
@@ -198,7 +198,13 @@ def reset_password_email_send(request, input_data):
             message="No record found with this email. please signup first.",
             status=HTTP_400_BAD_REQUEST,
         )
+    
     token = send_forgot_password_email(request, user)
+    
+    if token is None:
+        return generate_response(
+        data = input_data, message="Couldnot send email mail server error.", status=HTTP_500_INTERNAL_SERVER_ERROR
+    )
     input_data['token'] = token
     return generate_response(
         data = input_data, message="Link sent to the registered email address.", status=HTTP_200_OK
@@ -259,7 +265,7 @@ def reset_email(request, input_data):
 @jwt_required()
 def get_all_users(request):
     claims = get_jwt()
-    
+
     if claims.get("is_staff") == True:
         page = request.args.get("page", default=1, type=int)
 

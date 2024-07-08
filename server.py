@@ -18,8 +18,8 @@ mail = Mail()
 def create_app():
     """Construct the core application."""
     app = Flask(__name__, instance_relative_config=False)
-    cors =CORS(app)
-    app.config['CORS_HEADERS'] = 'Content-Type'
+    cors = CORS(app)
+    # app.config['CORS_HEADERS'] = 'Content-Type'
     # app.config.from_prefixed_env()
 
     # This is the configuration for the email server.
@@ -28,7 +28,7 @@ def create_app():
     app.config["MAIL_USERNAME"] = os.environ.get("EMAIL_HOST_USER")
     app.config["MAIL_PASSWORD"] = os.environ.get("EMAIL_HOST_PASSWORD")
     app.config["MAIL_USE_TLS"] = True
-    app.config["MAIL_USE_SSL"] = False
+    app.config['MAIL_DEBUG'] = True
 
     mail = Mail(app)
 

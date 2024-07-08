@@ -71,6 +71,7 @@ class ForgotPassword(Resource):
 
         :return: JSON object
         """
+        # input_data = ""
         input_data = request.get_json()
         response, status = reset_password_email_send(request, input_data)
         return make_response(response, status)
