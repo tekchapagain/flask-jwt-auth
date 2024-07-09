@@ -81,3 +81,24 @@ class TokenBlocklist(db.Model):
     def save(self):
         db.session.add(self)
         db.session.commit()
+
+
+class ContactModel(db.Model):
+    __tablename__ = "contacts"
+
+    id = db.Column(db.Integer, primary_key=True,autoincrement=True)
+    name = db.Column(db.String(80), nullable=False)
+    email = db.Column(db.String(80), nullable=False)
+    subject = db.Column(db.String(80), nullable=True)
+    message = db.Column(db.String(80), nullable = False)
+
+    def __repr__(self):
+        return f"<Name {self.name}>"
+    
+    def save_to_db(self) -> None:
+        db.session.add(self)
+        db.session.commit()
+
+    def delete_from_db(self) -> None:
+        db.session.delete(self)
+        db.session.commit()

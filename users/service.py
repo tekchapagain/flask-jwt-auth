@@ -10,7 +10,7 @@ from flask_jwt_extended import (
 )
 from server import db, jwt
 from users.helper import send_forgot_password_email
-from users.models import User, TokenBlocklist
+from users.models import User, TokenBlocklist, ContactModel
 from utils.common import generate_response, TokenGenerator
 from users.validation import (
     CreateLoginInputSchema,
@@ -282,4 +282,12 @@ def get_all_users(request):
 
     return generate_response(
         message="You are not authorized to view this", status=HTTP_401_UNAUTHORIZED
+    )
+
+def contact(request, input_data):
+    contact = ContactModel(**input_data)  # Create an instance of the User class
+    db.session.add(contact)  # Adds new User record to database
+    db.session.commit()  # Comment
+    return generate_response(
+         data = input_data, message="Contact submitted successfully", status=HTTP_200_OK
     )

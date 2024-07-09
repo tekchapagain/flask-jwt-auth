@@ -113,3 +113,13 @@ class UserListApi(MethodView):
         """
         response, status = get_all_users(request)
         return make_response(response, status)
+    
+
+
+class ContactApi(Resource):
+    @staticmethod
+    def post() -> Response:
+
+        input_data = request.get_json()
+        response, status = contact(request,input_data)
+        return make_response(response, status) 
