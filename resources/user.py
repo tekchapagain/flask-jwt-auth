@@ -1,8 +1,7 @@
-from flask import Response
+from flask import Response, request, make_response
 from flask_restful import Resource
 from flask.views import MethodView
-from flask import request, make_response
-from users.service import *
+from controller.user import *
 
 
 class SignUpApi(Resource):

@@ -10,7 +10,7 @@ from flask_jwt_extended import (
 )
 from server import db, jwt
 from users.helper import send_forgot_password_email
-from users.models import User, TokenBlocklist, ContactModel
+from models.user import User, TokenBlocklist, ContactModel
 from utils.common import generate_response, TokenGenerator
 from users.validation import (
     CreateLoginInputSchema,
@@ -112,8 +112,7 @@ def login_user(request, input_data):
         refresh_token = create_refresh_token(identity=user.username)
         input_data["token"] = {"access": access_token, "refresh": refresh_token}
         del input_data["password"]
-        # response = jsonify({"msg": "login successful"})
-        # set_access_cookies(response, access_token)
+        
         return generate_response(
             data=input_data, message="User logged in successfully", status=HTTP_201_CREATED
         )

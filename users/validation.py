@@ -14,7 +14,7 @@ class CreateSignupInputSchema(Schema):
 
 
 # "CreateLoginInputSchema is a schema that validates a dictionary with keys 'email' and 'password'
-# where 'email' is a valid email address and 'password' is a string with a minimum length of 6
+# where 'email' is a valid email address and 'password' is a String with a minimum length of 6
 # characters."
 #
 # The above class is a subclass of the Schema class from the marshmallow library. The Schema class is
@@ -40,3 +40,13 @@ class CreateResetPasswordEmailSendInputSchema(Schema):
 class ResetPasswordInputSchema(Schema):
     # the 'required' argument ensures the field exists
     password = fields.Str(required=True, validate=validate.Length(min=6))
+
+class ProductInputSchema(Schema):
+    name = fields.Str(required=True)
+    price = fields.Float(required=True)
+    description = fields.Str(required=True)
+    stock_quantity = fields.Int(required=True)
+    category_id = fields.Str(required=True)
+
+class CategoryInputSchema(Schema):
+    category_name = fields.Str(required=True)

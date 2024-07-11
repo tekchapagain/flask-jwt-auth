@@ -1,11 +1,14 @@
 from flask_restful import Api
-from users.views import *
+from resources.user import *
+from resources.product import Product, ProductList
+from resources.category import Category, CategoryList
 
 
 def create_authentication_routes(api: Api):
     """Adds resources to the api.
     :param api: Flask-RESTful Api Object
     """
+    'User API URL'
     api.add_resource(SignUpApi, "/api/auth/register")
     api.add_resource(LoginApi, "/api/auth/login")
     api.add_resource(WhoAmI, "/api/auth/whoami")
@@ -17,3 +20,13 @@ def create_authentication_routes(api: Api):
     api.add_resource(UserListApi, "/api/auth/users")
 
     api.add_resource(ContactApi, "/api/contact")
+
+    # api.add_namespace(product_ns)
+    # api.add_namespace(products_ns)
+    # api.add_namespace(category_ns)
+    # api.add_namespace(categories_ns)
+
+    api.add_resource(Product, '/api/product')
+    api.add_resource(ProductList, "/api/products")
+    api.add_resource(Category, '/api/category')
+    api.add_resource(CategoryList, "/api/categories")
