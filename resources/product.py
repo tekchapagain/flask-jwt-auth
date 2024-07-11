@@ -6,14 +6,13 @@ PRODUCT_NOT_FOUND = "Product not found."
 
 class Product(Resource):
     @staticmethod
-    def get() -> Response:
+    def get(id=None) -> Response:
         """
         Get response method for knowing user identity.
 
         :return: JSON object
         """
-        input_data = request.get_json()
-        response, status = get_product(request, input_data)
+        response, status = get_product(request, id)
         return make_response(response, status)
     
     @staticmethod
@@ -33,3 +32,9 @@ class ProductList(Resource):
     def get() -> Response :
         response, status = get_all_product(request)
         return make_response(response, status)
+    
+# class ProductSearch(Resource):
+#     @staticmethod
+#     def get() -> Response:
+#         response, status = search_product(request)
+#         return make_response(response, status)

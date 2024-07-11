@@ -30,7 +30,7 @@ def create_product(request, input_data):
         data=input_data, message="Product added Successfully", status=HTTP_201_CREATED
     )
 
-def get_product(request, input_data):
+def get_product(request, id=None):
     """
     It takes in a request and input data, validates the input data, checks if the user exists, checks if
     the password is correct, and returns a response
@@ -38,17 +38,11 @@ def get_product(request, input_data):
     :param : None
     :return: A dictionary with the keys: data, message, status
     """
-    # Extract name and id from input_data
-    product_id = input_data.get("id")
-    product_name = input_data.get("name")
-
-    if product_name:
-        product = ProductModel.find_by_name(product_name)
-    elif product_id:
-        product = ProductModel.query.get(product_id)
+    if id:
+        product = ProductModel.query.get(id)
     else:
         return generate_response(
-            data=None, message="Product name or ID must be provided", status=HTTP_400_BAD_REQUEST
+            data=None, message="Product ID must be provided", status=HTTP_400_BAD_REQUEST
         )
 
     if product:

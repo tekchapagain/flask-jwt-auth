@@ -16,7 +16,10 @@ class CategoryModel(db.Model):
         return 'CategoryModel(category_name=%s)' % (self.category_name)
 
     def json(self):
-        return {'category_name': self.category_name}
+        return {
+            'category_name': self.category_name,
+            'products': [product.json() for product in self.products.all()]
+            }
 
     @classmethod
     def find_by_category_name(cls, category_name) -> "CategoryModel":

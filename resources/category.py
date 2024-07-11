@@ -8,16 +8,15 @@ from controller.category import create_category,get_category, get_all_category
 CATEGORY_NOT_FOUND = "Category not found."
 CATEGORY_ALREADY_EXISTS = "Category '{}' Already exists."
 
-class Category(Resource):
+class Category(Resource):   
     @staticmethod    
-    def get() -> Response:
+    def get(id) -> Response:
         """
         Get response method for knowing user identity.
 
         :return: JSON object
         """
-        input_data = request.get_json()
-        response, status = get_category(request,input_data)
+        response, status = get_category(request,id)
         return make_response(response, status)
     
     @staticmethod

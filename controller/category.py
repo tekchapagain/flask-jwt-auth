@@ -29,7 +29,7 @@ def create_category(request, input_data):
         data=input_data, message="Category added Successfully", status=HTTP_201_CREATED
     )
 
-def get_category(request,input_data):
+def get_category(request,id):
     """
     It takes in a request and input data, validates the input data, checks if the user exists, checks if
     the password is correct, and returns a response
@@ -37,7 +37,7 @@ def get_category(request,input_data):
     :param : None
     :return: A dictionary with the keys: data, message, status
     """
-    category = CategoryModel.find_by_category_name(category_name=input_data.get("name"))
+    category = CategoryModel.find_by_id(id)
     if category:
         return generate_response(
         data=category.json(), message="Category", status=HTTP_200_OK
