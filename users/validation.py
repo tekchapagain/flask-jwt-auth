@@ -42,11 +42,12 @@ class ResetPasswordInputSchema(Schema):
     password = fields.Str(required=True, validate=validate.Length(min=6))
 
 class ProductInputSchema(Schema):
+    id = fields.Int(required = False)
     name = fields.Str(required=True)
     price = fields.Float(required=True)
     description = fields.Str(required=True)
     stock_quantity = fields.Int(required=True)
-    category_id = fields.Str(required=True)
+    category_id = fields.Int(required=True)
 
 class CategoryInputSchema(Schema):
     category_name = fields.Str(required=True)

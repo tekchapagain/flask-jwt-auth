@@ -17,12 +17,11 @@ def create_product(request, input_data):
     errors = create_validation_schema.validate(input_data)
     if errors:
         return generate_response(message=errors)
-    check_product_exists = ProductModel.find_by_name(name=input_data.get("name"))
     # check_email_exist = User.get_user_by_email(email=input_data.get("email"))
-    if check_product_exists:
-        return generate_response(
-            message="Product already added", status=HTTP_400_BAD_REQUEST
-        )
+    # if check_product_exists:
+    #     return generate_response(
+    #         message="Product already exi", status=HTTP_400_BAD_REQUEST
+    #     )
     
     new_product = ProductModel(**input_data)
     db.session.add(new_product)  # Adds new User record to database

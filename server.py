@@ -9,6 +9,7 @@ from flask_cors import CORS, cross_origin
 
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager, set_access_cookies
+from flask_migrate import Migrate
 
 db = SQLAlchemy()
 jwt = JWTManager()
@@ -21,7 +22,7 @@ def create_app():
     cors = CORS(app)
     # app.config['CORS_HEADERS'] = 'Content-Type'
     # app.config.from_prefixed_env()
-
+    migrate = Migrate(app, db)
     # This is the configuration for the email server.
     app.config["MAIL_SERVER"] = "smtp-relay.brevo.com"
     app.config["MAIL_PORT"] = 587
