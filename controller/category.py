@@ -16,7 +16,7 @@ def create_category(request, input_data):
     errors = create_validation_schema.validate(input_data)
     if errors:
         return generate_response(message=errors)
-    check_category_exists = CategoryModel.find_by_category_name(category_name=input_data.get("name"))
+    check_category_exists = CategoryModel.find_by_category_name(category_name=input_data.get("category_name"))
     if check_category_exists:
         return generate_response(
             message="Category already exists", status=HTTP_400_BAD_REQUEST

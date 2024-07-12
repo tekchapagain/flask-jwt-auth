@@ -21,12 +21,8 @@ def create_authentication_routes(api: Api):
 
     api.add_resource(ContactApi, "/api/contact")
 
-    # api.add_namespace(product_ns)
-    # api.add_namespace(products_ns)
-    # api.add_namespace(category_ns)
-    # api.add_namespace(categories_ns)
 
-    api.add_resource(Product,'/api/product/<int:id>')
+    api.add_resource(Product,'/api/product/','/api/product/<int:id>')
     api.add_resource(ProductList, "/api/products")
-    api.add_resource(Category, '/api/category','/api/category/<int:id>')
+    api.add_resource(Category,'/api/category/','/api/category/<int:id>')
     api.add_resource(CategoryList, "/api/categories")

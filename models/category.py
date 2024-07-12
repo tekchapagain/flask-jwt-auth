@@ -12,11 +12,15 @@ class CategoryModel(db.Model):
     def __init__(self, name):
         self.category_name = name
 
+    def __init__(self, category_name):
+        self.category_name = category_name
+
     def __repr__(self):
         return 'CategoryModel(category_name=%s)' % (self.category_name)
 
     def json(self):
         return {
+            'category_id' : self.category_id,
             'category_name': self.category_name,
             'products': [product.json() for product in self.products.all()]
             }

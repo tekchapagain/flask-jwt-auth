@@ -27,6 +27,7 @@ class Category(Resource):
         :return: JSON object
         """
         input_data = request.get_json()
+        print(input_data)
         response, status = create_category(request,input_data)
         return make_response(response, status)
 
