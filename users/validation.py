@@ -50,4 +50,5 @@ class ProductInputSchema(Schema):
     category_id = fields.Int(required=True)
 
 class CategoryInputSchema(Schema):
+    category_id = fields.Int(required=False)
     category_name = fields.Str(required=True)

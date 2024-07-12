@@ -53,7 +53,6 @@ def get_all_category(request):
     per_page = request.args.get("per_page", default=3, type=int)
     categories = CategoryModel.query.paginate(page=page, per_page=per_page)
     result = CategoryInputSchema().dump(categories, many=True)
-    print(result)
     return generate_response(
     data=result, message="List of category", status=HTTP_200_OK
     )
