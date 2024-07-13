@@ -1,6 +1,6 @@
 from models.category import CategoryModel
 from validation import CategoryInputSchema
-from utils.http_code import HTTP_200_OK, HTTP_400_BAD_REQUEST,HTTP_201_CREATED
+from utils.http_code import *
 from utils.common import generate_response
 from server import db, jwt
 
@@ -11,7 +11,7 @@ from flask_jwt_extended import (
 
 def create_category(request, input_data):
     """
-    It add a new product
+    It add a new category
 
     :param request: The request object
     :param input_data: This is the data that is passed to the function
@@ -51,6 +51,48 @@ def get_category(request,id):
         message="Category not availabe", status=HTTP_200_OK
         )
 
+@jwt_required(verify_type=False)
+def edit_category(request,id=None):
+    """
+    It takes in a request and input data, validates the input data, checks if the category exists, 
+    and updates the category details if the category is found.
+    
+    :param id: category ID
+    :return: A dictionary with the keys: data, message, status
+    """
+    if not id:
+        return generate_response(
+            data=None, message="Category ID must be provided", status=HTTP_400_BAD_REQUEST
+        )
+
+    category = CategoryModel.query.get(id)
+    if not category:
+        return generate_response(
+            data=None, message="Category not found", status=HTTP_404_NOT_FOUND
+        )
+
+    # Get input data from request
+    data = request.get_json()
+    if not data:
+        return generate_response(
+            data=None, message="No input data provided", status=HTTP_400_BAD_REQUEST
+        )
+
+    # Update category details
+    try:
+        category.category_name = data.get('category_name', category.category_name)
+
+        # Save updated category to database
+        db.session.commit()
+
+        return generate_response(
+            data=category.json(), message="Category updated successfully", status=HTTP_200_OK
+        )
+    except Exception as e:
+        db.session.rollback()
+        return generate_response(
+            data=None, message=str(e), status=HTTP_500_INTERNAL_SERVER_ERROR
+        )
 
 def get_all_category(request):
         
@@ -68,7 +110,7 @@ def delete_category(request,id):
     claims = get_jwt()
     if claims.get("is_staff") != True:
         return generate_response(
-            message="You are not authorized to delete this product",
+            message="You are not authorized to delete this category",
             status=HTTP_400_BAD_REQUEST
         )
     

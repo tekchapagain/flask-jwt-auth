@@ -1,6 +1,6 @@
 from models.product import ProductModel
 from validation import ProductInputSchema
-from utils.http_code import HTTP_200_OK, HTTP_400_BAD_REQUEST,HTTP_201_CREATED, HTTP_404_NOT_FOUND
+from utils.http_code import *
 from utils.common import generate_response
 from server import db
 from flask_jwt_extended import (
@@ -8,7 +8,7 @@ from flask_jwt_extended import (
     get_jwt,
 )
 
-
+@jwt_required(verify_type=False)
 def create_product(request, input_data):
     """
     It add a new product
@@ -17,6 +17,12 @@ def create_product(request, input_data):
     :param input_data: This is the data that is passed to the function
     :return: A response object
     """
+    claims = get_jwt()
+    if claims.get("is_staff") != True:
+        return generate_response(
+            message="Authorization needed",
+            status=HTTP_400_BAD_REQUEST
+        )
     create_validation_schema = ProductInputSchema()
     errors = create_validation_schema.validate(input_data)
     if errors:
@@ -33,6 +39,54 @@ def create_product(request, input_data):
     return generate_response(
         data=input_data, message="Product added Successfully", status=HTTP_201_CREATED
     )
+
+@jwt_required(verify_type=False)
+def edit_product(request,id=None):
+    """
+    It takes in a request and input data, validates the input data, checks if the product exists, 
+    and updates the product details if the product is found.
+    
+    :param id: Product ID
+    :return: A dictionary with the keys: data, message, status
+    """
+    if not id:
+        return generate_response(
+            data=None, message="Product ID must be provided", status=HTTP_400_BAD_REQUEST
+        )
+
+    product = ProductModel.query.get(id)
+    if not product:
+        return generate_response(
+            data=None, message="Product not found", status=HTTP_404_NOT_FOUND
+        )
+
+    # Get input data from request
+    data = request.get_json()
+    if not data:
+        return generate_response(
+            data=None, message="No input data provided", status=HTTP_400_BAD_REQUEST
+        )
+
+    # Update product details
+    try:
+        product.name = data.get('name', product.name)
+        product.price = data.get('price', product.price)
+        product.description = data.get('description', product.description)
+        product.stock_quantity = data.get('stock_quantity', product.stock_quantity)
+        product.category_id = data.get('category_id', product.category_id)
+
+        # Save updated product to database
+        db.session.commit()
+
+        return generate_response(
+            data=product.json(), message="Product updated successfully", status=HTTP_200_OK
+        )
+    except Exception as e:
+        db.session.rollback()
+        return generate_response(
+            data=None, message=str(e), status=HTTP_500_INTERNAL_SERVER_ERROR
+        )
+    
 
 def get_product(request, id=None):
     """

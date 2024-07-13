@@ -30,7 +30,10 @@ class Category(Resource):
         response, status = create_category(request,input_data)
         return make_response(response, status)
 
+    def put(self,id=None):
+        response, status = edit_category(request,id)
 
+        return make_response(response, status)
     def delete(self,id):
         response, status = delete_category(request,id)
         return make_response(response, status)

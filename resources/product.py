@@ -26,7 +26,11 @@ class Product(Resource):
         response, status = create_product(request, input_data)
         return make_response(response, status)
     
-    def delete(self,id):
+    def put(self,id=None):
+        response, status = edit_product(request,id)
+        return make_response(response, status)
+    
+    def delete(self,id=None):
         response, status = delete_product(request,id)
         return make_response(response, status)
 
