@@ -1,14 +1,14 @@
 """App entry point."""
 """Initialize Flask app."""
 import os
-from flask import Flask, jsonify
+from flask import Flask
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 
 from flask_sqlalchemy import SQLAlchemy
-from flask_jwt_extended import JWTManager, set_access_cookies
+from flask_jwt_extended import JWTManager
 # from flask_migrate import Migrate
 
 db = SQLAlchemy()
@@ -37,7 +37,7 @@ def create_app():
 
     api = Api(app=app)
 
-    from users.routes import create_authentication_routes
+    from routes import create_authentication_routes
 
     create_authentication_routes(api=api)
 

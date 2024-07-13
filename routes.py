@@ -1,6 +1,6 @@
 from flask_restful import Api
 from resources.user import *
-from resources.product import Product, ProductList
+from resources.product import Product, ProductList, ProductSearch
 from resources.category import Category, CategoryList
 
 
@@ -24,5 +24,7 @@ def create_authentication_routes(api: Api):
 
     api.add_resource(Product,'/api/product/','/api/product/<int:id>')
     api.add_resource(ProductList, "/api/products")
+    api.add_resource(ProductSearch, "/api/product/search")
+
     api.add_resource(Category,'/api/category/','/api/category/<int:id>')
     api.add_resource(CategoryList, "/api/categories")

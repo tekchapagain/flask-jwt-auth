@@ -9,10 +9,10 @@ from flask_jwt_extended import (
     get_jwt_identity
 )
 from server import db, jwt
-from users.helper import send_forgot_password_email
+from helper import send_forgot_password_email
 from models.user import User, TokenBlocklist, ContactModel
 from utils.common import generate_response, TokenGenerator
-from users.validation import (
+from validation import (
     CreateLoginInputSchema,
     CreateResetPasswordEmailSendInputSchema,
     CreateSignupInputSchema, ResetPasswordInputSchema,
@@ -24,12 +24,12 @@ from utils.http_code import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST,
 @jwt.user_lookup_loader
 def user_lookup_callback(_jwt_headers, jwt_data):
     identity = jwt_data["sub"]
-    return User.query.filter_by(username=identity).one_or_none()
+    return User.query.filter_by(email=identity).one_or_none()
 
 # additional claims
 @jwt.additional_claims_loader
 def make_additional_claims(identity):
-    if identity == "admin":
+    if identity == "admin@gmail.com":
         return {"is_staff": True}
     return {"is_staff": False}
 
@@ -108,8 +108,8 @@ def login_user(request, input_data):
     if user is None:
         return generate_response(message="User not found", status=HTTP_400_BAD_REQUEST)
     if user.check_password(input_data.get("password")):
-        access_token = create_access_token(identity=user.username, fresh=datetime.timedelta(minutes=15))
-        refresh_token = create_refresh_token(identity=user.username)
+        access_token = create_access_token(identity=user.email, fresh=datetime.timedelta(minutes=15))
+        refresh_token = create_refresh_token(identity=user.email)
         input_data["token"] = {"access": access_token, "refresh": refresh_token}
         del input_data["password"]
         

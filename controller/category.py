@@ -1,8 +1,13 @@
 from models.category import CategoryModel
-from users.validation import CategoryInputSchema
+from validation import CategoryInputSchema
 from utils.http_code import HTTP_200_OK, HTTP_400_BAD_REQUEST,HTTP_201_CREATED
 from utils.common import generate_response
-from server import db
+from server import db, jwt
+
+from flask_jwt_extended import (
+    jwt_required,
+    get_jwt,
+)
 
 def create_category(request, input_data):
     """
@@ -56,3 +61,29 @@ def get_all_category(request):
     return generate_response(
     data=result, message="List of category", status=HTTP_200_OK
     )
+
+
+@jwt_required()
+def delete_category(request,id):
+
+    claims = get_jwt()
+    print(claims)
+    if claims.get("is_staff") == True:
+        category = CategoryModel.find_by_id(id)
+        if category:
+            try:
+                category.delete_from_db()
+                return generate_response(
+                 message="Category Deleted Successfully", status=HTTP_200_OK
+                )
+            except:
+                return generate_response(
+             message="Can't Delete Category", status=HTTP_400_BAD_REQUEST
+            )
+        return generate_response(
+             message="Category Not found", status=HTTP_400_BAD_REQUEST
+            )
+    else:
+        return generate_response(
+         message="You are not authorized to view this", status=HTTP_400_BAD_REQUEST
+        )

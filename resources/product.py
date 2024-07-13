@@ -1,6 +1,6 @@
 from flask import Response, request, make_response
 from flask_restful import Resource
-from controller.product import get_product, create_product, get_all_product
+from controller.product import *
 
 PRODUCT_NOT_FOUND = "Product not found."
 
@@ -33,8 +33,13 @@ class ProductList(Resource):
         response, status = get_all_product(request)
         return make_response(response, status)
     
-# class ProductSearch(Resource):
-#     @staticmethod
-#     def get() -> Response:
-#         response, status = search_product(request)
-#         return make_response(response, status)
+class ProductSearch(Resource):
+    @staticmethod
+    def get() -> Response:
+        """
+        GET response method for creating user.
+
+        :return: JSON object
+        """
+        response, status = search_products(request)
+        return make_response(response, status)

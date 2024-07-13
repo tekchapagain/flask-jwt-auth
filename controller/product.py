@@ -1,5 +1,5 @@
 from models.product import ProductModel
-from users.validation import ProductInputSchema
+from validation import ProductInputSchema
 from utils.http_code import HTTP_200_OK, HTTP_400_BAD_REQUEST,HTTP_201_CREATED, HTTP_404_NOT_FOUND
 from utils.common import generate_response
 from server import db
@@ -65,3 +65,34 @@ def get_all_product(request):
     return generate_response(
     result, status=HTTP_200_OK
     )
+
+def search_products(request):
+    """
+    Search for products based on query parameters such as name and category.
+
+    Query Parameters:
+    - name (str): The name or part of the name of the product to search for.
+    - category (str): The category or part of the category of the product to search for.
+
+    Returns:
+    - A JSON response with the search results and HTTP status code 200.
+    """
+    # Get search parameters
+    search_name = request.args.get("term", type=str)
+    
+    # Build the base query
+    query = ProductModel.query
+    
+    # Apply search filters
+    if search_name:
+        query = query.filter(ProductModel.name.ilike(f"%{search_name}%"))
+
+    # Execute the query
+    products = query.all()
+
+    # Serialize the results
+    result = ProductInputSchema(many=True).dump(products)
+
+    # Generate the response
+    return generate_response(result, status=HTTP_200_OK)
+
