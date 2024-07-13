@@ -100,7 +100,7 @@ def search_products(request):
     # Generate the response
     return generate_response(result, status=HTTP_200_OK)
 
-@jwt_required()
+@jwt_required(verify_type=False)
 def delete_product(request, id):
     claims = get_jwt()
     if claims.get("is_staff") != True:
