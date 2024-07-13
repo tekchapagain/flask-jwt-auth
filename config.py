@@ -14,8 +14,7 @@ class Config:
     SECRET_KEY = environ.get("SECRET_KEY")
     # FLASK_APP = environ.get("FLASK_APP")
     FLASK_ENV = environ.get("FLASK_ENV")
-    # JWT_TOKEN_LOCATION = environ.get("JWT_TOKEN_LOCATION")
-    # JWT_COOKIE_SECURE = False
+    DEBUG= True
     # Database
     MAIL_USE_TLS = False
     MAIL_USE_SSL = True

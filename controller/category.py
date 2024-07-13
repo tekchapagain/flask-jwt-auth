@@ -65,25 +65,28 @@ def get_all_category(request):
 
 @jwt_required()
 def delete_category(request,id):
-
     claims = get_jwt()
-    print(claims)
-    if claims.get("is_staff") == True:
-        category = CategoryModel.find_by_id(id)
-        if category:
-            try:
-                category.delete_from_db()
-                return generate_response(
-                 message="Category Deleted Successfully", status=HTTP_200_OK
-                )
-            except:
-                return generate_response(
-             message="Can't Delete Category", status=HTTP_400_BAD_REQUEST
-            )
+    if claims.get("is_staff") != True:
         return generate_response(
-             message="Category Not found", status=HTTP_400_BAD_REQUEST
-            )
-    else:
+            message="You are not authorized to delete this product",
+            status=HTTP_400_BAD_REQUEST
+        )
+    
+    category = CategoryModel.find_by_id(id)
+    if not category:
         return generate_response(
-         message="You are not authorized to view this", status=HTTP_400_BAD_REQUEST
+            message="Category Not found",
+            status=HTTP_400_BAD_REQUEST
+        )
+
+    try:
+        category.delete_from_db()
+        return generate_response(
+            message="Category Deleted Successfully",
+            status=HTTP_200_OK
+        )
+    except Exception as e:
+        return generate_response(
+            message="Can't Delete Category at the moment",
+            status=HTTP_400_BAD_REQUEST
         )

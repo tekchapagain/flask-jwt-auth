@@ -3,6 +3,10 @@ from validation import ProductInputSchema
 from utils.http_code import HTTP_200_OK, HTTP_400_BAD_REQUEST,HTTP_201_CREATED, HTTP_404_NOT_FOUND
 from utils.common import generate_response
 from server import db
+from flask_jwt_extended import (
+    jwt_required,
+    get_jwt,
+)
 
 
 def create_product(request, input_data):
@@ -96,3 +100,30 @@ def search_products(request):
     # Generate the response
     return generate_response(result, status=HTTP_200_OK)
 
+@jwt_required()
+def delete_product(request, id):
+    claims = get_jwt()
+    if claims.get("is_staff") != True:
+        return generate_response(
+            message="You are not authorized to delete this product",
+            status=HTTP_400_BAD_REQUEST
+        )
+
+    product = ProductModel.find_by_id(id)
+    if not product:
+        return generate_response(
+            message="Product Not found",
+            status=HTTP_400_BAD_REQUEST
+        )
+
+    try:
+        product.delete_from_db()
+        return generate_response(
+            message="Product Deleted Successfully",
+            status=HTTP_200_OK
+        )
+    except Exception as e:
+        return generate_response(
+            message=e.message,
+            status=HTTP_404_NOT_FOUND
+        )

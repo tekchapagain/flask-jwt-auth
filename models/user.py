@@ -6,7 +6,6 @@ from datetime import datetime, timezone
 class User(db.Model):
     __tablename__ = "users"
     id = db.Column(db.String(), primary_key=True, default=lambda:str(uuid.uuid4()))
-    # firstname = db.Column(db.String(), nullable=False)
     # lastname  = db.Column(db.String(), nullable=False)
     username  = db.Column(db.String(), nullable=False)
     # address   = db.Column(db.String(), nullable=False)

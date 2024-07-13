@@ -25,7 +25,10 @@ class Product(Resource):
         input_data = request.get_json()
         response, status = create_product(request, input_data)
         return make_response(response, status)
-
+    
+    def delete(self,id):
+        response, status = delete_product(request,id)
+        return make_response(response, status)
 
 class ProductList(Resource):
     @staticmethod
